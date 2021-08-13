@@ -1,36 +1,9 @@
-from ariadne import ObjectType, QueryType, gql, make_executable_schema
+from ariadne import ObjectType, QueryType, gql, make_executable_schema, load_schema_from_path
 from ariadne.asgi import GraphQL
 
 import data
 
-# Define types using Schema Definition Language (https://graphql.org/learn/schema/)
-# Wrapping string in gql function provides validation and better error traceback
-type_defs = gql("""
-    type Query {
-        employee(id: Int): [Employee!]!
-        product(id: Int): [Product!]!
-        supplier(id: Int): [Supplier!]!
-    }
-    type Employee {
-        id: Int
-        firstName: String
-        lastName: String
-        age: Int
-        fullName: String
-    }
-    type Product {
-        id: Int
-        name: String
-        price: Float
-    }
-    type Supplier {
-        id: Int
-        name: String
-        address: String
-        country: String
-        phone: String
-    }
-""")
+type_defs = load_schema_from_path("schema.graphql")
 
 # Map resolver functions to Query fields using QueryType
 query = QueryType()
